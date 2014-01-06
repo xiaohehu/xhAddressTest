@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>AC37CA5C-D2F6-4211-9166-44F652845E62</string>
+	<key>IDESourceControlProjectName</key>
+	<string>xhAddressTest</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DE0C382B-E0CF-488E-A067-9A9CBA2FC7C1</key>
+		<string>https://github.com/xiaohehu/xhAddressTest.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>xhAddressTest.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DE0C382B-E0CF-488E-A067-9A9CBA2FC7C1</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/xiaohehu/xhAddressTest.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DE0C382B-E0CF-488E-A067-9A9CBA2FC7C1</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DE0C382B-E0CF-488E-A067-9A9CBA2FC7C1</string>
+			<key>IDESourceControlWCCName</key>
+			<string>xhAddressTest</string>
+		</dict>
+	</array>
+</dict>
+</plist>

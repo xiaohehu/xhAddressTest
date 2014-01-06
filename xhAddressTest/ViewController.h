@@ -11,7 +11,7 @@
 #import <AddressBook/AddressBook.h>
 #import <MessageUI/MessageUI.h>
 
-@interface ViewController : UIViewController <ABPeoplePickerNavigationControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface ViewController : UIViewController <ABPeoplePickerNavigationControllerDelegate, MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate, UIActionSheetDelegate>
 @property (strong, nonatomic) IBOutlet UILabel *uil_firstName;
 @property (strong, nonatomic) IBOutlet UILabel *uil_phoneNum;
 

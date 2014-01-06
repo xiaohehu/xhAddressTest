@@ -8,13 +8,14 @@
 
 #import "ViewController.h"
 
-#define kRecipient @"leasinginfo@trademarkproperty.com"
+#define kRecipient @"INFO@NEOSCAPE.COM"
 #define kSUBJECT @"Contact From App"
 #define kMAILBODY @"This email was sent from *app*"
+#define kDefaultMailBody @"This is the default mail body from *app*"
 
 @interface ViewController ()
 @property (nonatomic, strong)NSData *vCardData;
-
+@property (nonatomic, strong)NSData *default_Vcard;
 @end
 
 @implementation ViewController
@@ -41,22 +42,101 @@
 
 - (IBAction)sendContact:(id)sender {
     
+//    NSArray *arr_recipients = [[NSArray alloc] initWithObjects:kRecipient, nil];
+//    if ([MFMailComposeViewController canSendMail] == YES) {
+//        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+//        picker.mailComposeDelegate = self; // &lt;- very important step if you want feedbacks on what the user did with your email sheet
+//        [picker addAttachmentData:_vCardData mimeType:@"text/vcard" fileName:@"vcard.vcf"];
+//        [picker setToRecipients:arr_recipients];
+//        [picker setSubject:kSUBJECT];
+//        [picker setMessageBody:kMAILBODY isHTML:NO];// depends. Mostly YES, unless you want to send it as plain text (boring)
+//        
+//        //        picker.navigationBar.barStyle = UIBarStyleBlack; // choose your style, unfortunately, Translucent colors behave quirky.
+//        [self presentViewController:picker animated:YES completion:nil];
+//    } else {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Status" message:[NSString stringWithFormat:@"Email needs to be configured before this device can send email. \n\n Use nsq@neoscape.com on a device capable of sending email."]
+//                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alert show];
+//    }
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]initWithTitle:@"Email" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Default Email", @"Send Vcard", @"Blank Email", nil];
+    [actionSheet showInView:self.view];
+}
+-(void)generateEmailByIndex:(int)index
+{
     NSArray *arr_recipients = [[NSArray alloc] initWithObjects:kRecipient, nil];
     if ([MFMailComposeViewController canSendMail] == YES) {
         MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
         picker.mailComposeDelegate = self; // &lt;- very important step if you want feedbacks on what the user did with your email sheet
-        [picker addAttachmentData:_vCardData mimeType:@"text/vcard" fileName:@"vcard.vcf"];
-        [picker setToRecipients:arr_recipients];
-        [picker setSubject:kSUBJECT];
-        [picker setMessageBody:kMAILBODY isHTML:NO];// depends. Mostly YES, unless you want to send it as plain text (boring)
+        if (index == 0) {
+            [picker setToRecipients:arr_recipients];
+            [picker setSubject:kSUBJECT];
+            [picker setMessageBody:kDefaultMailBody isHTML:NO];
+        }
+        else if (index == 1){
+            if (_vCardData == nil) {
+                [self generateDefaultVcard];
+                [picker addAttachmentData:_default_Vcard mimeType:@"text/vcard" fileName:@"default_vcard.vcf"];
+            }
+            else{
+                [picker addAttachmentData:_vCardData mimeType:@"text/vcard" fileName:@"vcard.vcf"];
+            }
+            [picker setToRecipients:arr_recipients];
+            [picker setSubject:kSUBJECT];
+            [picker setMessageBody:kMAILBODY isHTML:NO];
+        }
+        else if (index == 2){
+            [picker setToRecipients:nil];
+            [picker setSubject:nil];
+            [picker setMessageBody:nil isHTML:NO];
+        }
         
-        //        picker.navigationBar.barStyle = UIBarStyleBlack; // choose your style, unfortunately, Translucent colors behave quirky.
         [self presentViewController:picker animated:YES completion:nil];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Status" message:[NSString stringWithFormat:@"Email needs to be configured before this device can send email. \n\n Use nsq@neoscape.com on a device capable of sending email."]
                                                        delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alert show];
     }
+}
+#pragma mark - ActionSheet Delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+        case 1:
+        case 2:
+            [self generateEmailByIndex:buttonIndex];
+            break;
+        case 3:
+            break;
+        default:
+            break;
+    }
+}
+#pragma mark - Generate Default Vcard
+-(void)generateDefaultVcard
+{
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    
+    [mutableArray addObject:@"BEGIN:VCARD"];
+    
+    [mutableArray addObject:@"VERSION:3.0"];
+    
+    [mutableArray addObject:@"N:Buxton;Evan;;;"];
+    
+    [mutableArray addObject:@"FN:Evan Buxton"];
+    
+    [mutableArray addObject:@"ORG:Neoscape"];
+    
+    [mutableArray addObject:@"ADR:23 Drydock Ave"];
+    
+    [mutableArray addObject:@"TEL:617-121-1212"];
+    
+    [mutableArray addObject:@"EMAIL:evan.buxton@neoscape.com"];
+    
+    [mutableArray addObject:@"END:VCARD"];
+    
+    NSString *string = [mutableArray componentsJoinedByString:@"\n"];
+    
+    self.default_Vcard = [string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - Delegate of ABPeoplePicker
@@ -140,4 +220,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{  }
 @end
